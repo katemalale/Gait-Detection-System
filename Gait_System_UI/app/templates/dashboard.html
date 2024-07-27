@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Gait System</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#">Employees</a></li>
+                    <li><a href="#">User Profile</a></li>
+                    <li><a href="#">Notification</a></li>
+                    <li><a href="#">LogOut</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="profile">
+                    <img src="profile.jpg" alt="Profile Picture">
+                    <p>Kate Malale</p>
+                    <p>katemalale@icloud.com</p>
+                </div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="header">
+                <input type="text" placeholder="Search...">
+                <span id="datetime"></span>
+            </header>
+            <section class="content">
+                <div class="content-header">
+                    <h2>Camera Feeds</h2>
+                </div>
+                <div class="camera-container">
+                    <video id="cameraFeed" autoplay></video>
+                </div>
+                <div class="content-header">
+                    <h2>Movement Analysis</h2>
+                </div>
+                <div class="analysis-container">
+                    <p id="movementAnalysis">No abnormal movement detected.</p>
+                    <button id="downloadReport">Download Report</button>
+                    <button id="visualizeData">Visualize Data</button>
+                </div>
+                <div class="content-header">
+                    <h2>Abnormal Detection Screenshots</h2>
+                </div>
+                <div class="screenshots-container">
+                    <!-- Screenshots will go here -->
+                    <button id="downloadScreenshots">Download Screenshots</button>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        // JavaScript to fetch camera feed and update movement analysis
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                const video = document.getElementById('cameraFeed');
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error('Error accessing camera:', err);
+                document.getElementById('movementAnalysis').textContent = 'Error accessing camera feed.';
+            });
+
+        // Display current date and time
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('datetime').textContent = now.toLocaleString();
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // Event listeners for buttons
+        document.getElementById('downloadReport').addEventListener('click', () => {
+            // Code to download the movement analysis report
+        });
+
+        document.getElementById('visualizeData').addEventListener('click', () => {
+            // Code to visualize the movement analysis data
+        });
+
+        document.getElementById('downloadScreenshots').addEventListener('click', () => {
+            // Code to download the screenshots
+        });
+    </script>
+</body>
+</html>

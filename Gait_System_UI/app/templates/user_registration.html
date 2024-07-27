@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gait System</title>
+    <link rel="stylesheet" href="user_registration.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <div class="content">
+                <h1>Gait Detection System</h1>
+                <h2>Create an Account</h2>
+                <form action="/register" method="POST">
+                    <div class="input-container">
+                        <input type="text" id="username" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="input-container">
+                        <input type="email" id="email" name="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="input-container">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="input-container">
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Already have an account? <a href="/login">Login here</a></p>
+            </div>
+        </div>
+        <div class="right-side">
+            <!-- You can add an image or any other content here -->
+            <img src="your-image-path.jpg" alt="Sign Up Image">
+        </div>
+    </div>
+</body>
+</html>

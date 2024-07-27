@@ -1,0 +1,78 @@
+<!-- add_employee.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Employee</title>
+    <link rel="stylesheet" href="add_employee.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Add New Employee</h2>
+        <form action="/add_employee" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="first_name">Full Name:</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="id_number">ID Number:</label>
+                <input type="text" id="id_number" name="id_number" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Cell Number:</label>
+                <input type="text" id="phone_number" name="phone_number" required>
+            </div>
+            <div class="form-group">
+                <label for="file">Face Image:</label>
+                <input type="file" id="file" name="file" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="scan_face">Scan Face:</label>
+                <button type="button" id="startScan">Start Scan</button>
+                <video id="cameraFeed" autoplay style="display: none;"></video>
+            </div>
+            <button type="submit">Add Employee</button>
+        </form>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@latest/dist/face-api.min.js"></script>
+    <script>
+        document.getElementById('startScan').addEventListener('click', async () => {
+            const video = document.getElementById('cameraFeed');
+            video.style.display = 'block';
+
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+
+            await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+            await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+            await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+
+            video.addEventListener('play', async () => {
+                const canvas = faceapi.createCanvasFromMedia(video);
+                document.body.append(canvas);
+
+                const displaySize = { width: video.width, height: video.height };
+                faceapi.matchDimensions(canvas, displaySize);
+
+                setInterval(async () => {
+                    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+                        .withFaceLandmarks()
+                        .withFaceDescriptors();
+
+                    const resizedDetections = faceapi.resizeResults(detections, displaySize);
+                    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+                    faceapi.draw.drawDetections(canvas, resizedDetections);
+                    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
